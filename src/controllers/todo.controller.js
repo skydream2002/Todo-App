@@ -1,6 +1,6 @@
 const pool = require('../config/db')
 
-exports.creatTodo = async (req, res) => {
+exports.createTodo = async (req, res) => {
     const { title, description } = req.body
 
     const [result] = await pool.query(
