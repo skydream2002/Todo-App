@@ -21,11 +21,11 @@ exports.getTodo = async (req, res) => {
     const offset = (page - 1) * limit;
 
     const [todos] = await pool.query(
-        'select * from todos where user_id=? limit=? offset=?',
+        'select * from todos where user_id=? limit ? offset ?',
         [req.user.id, limit, offset]
     )
 
-    const [[{ total }]] = pool.query(
+    const [[{ total }]] = await pool.query(
         'select count(*) as total from todos where user_id=?',
         [req.user.id]
     )
@@ -71,5 +71,5 @@ exports.deleteTodo = async (req, res) => {
         res.status(403).json({ message: 'Forbidden' });
     }
 
-    res.status(204).json({msg: 'success'})
+    res.status(204).send()
 };
