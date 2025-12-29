@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 exports.register = async (req, res) => {
     const { name, email, password } = req.body
 
-    const [exiting] = pool.query(
+    const [exiting] = await pool.query(
         'select id from User where email=?',
         [email]
     );
@@ -22,7 +22,8 @@ exports.register = async (req, res) => {
 
     const token = jwt.sign(
         { id: result.insertId, email },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
     )
     res.json({ msg: 'registered ', token: token })
 }
@@ -30,13 +31,13 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
-    const [users] = pool.query(
+    const [users] = await pool.query(
         'select * from User where email=?',
         [email]
     )
 
-    if (!user.length) {
-        res.status(400).json({ msg: 'Invalid email' })
+    if (users.length === 0) {
+        res.status(401).json({ msg: 'Invalid email' })
     }
 
     const user = users[0]
@@ -48,7 +49,8 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign(
         { id: user.id, email },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET, 
+        { expiresIn: '1d' }
     );
 
     res.json({ msg: 'logined ', token: token });
