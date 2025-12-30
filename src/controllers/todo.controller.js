@@ -68,7 +68,7 @@ exports.deleteTodo = async (req, res) => {
     )
 
     if (result.affectedRows === 0){
-        res.status(403).json({ message: 'Forbidden' });
+        return res.status(403).json({ message: 'Forbidden' });
     }
 
     res.status(204).send()
