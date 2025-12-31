@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
     );
 
     if (exiting.length) {
-        res.status(400).json({ message: 'Email already exists' })
+        return res.status(400).json({ message: 'Email already exists' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,14 +37,14 @@ exports.login = async (req, res) => {
     )
 
     if (users.length === 0) {
-        res.status(401).json({ msg: 'Invalid email' })
+        return res.status(401).json({ msg: 'Invalid email' })
     }
 
     const user = users[0]
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-        res.status(400).json({ msg: 'Invalid paswword' })
+        return res.status(400).json({ msg: 'Invalid paswword' })
     }
 
     const token = jwt.sign(
