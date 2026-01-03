@@ -45,12 +45,46 @@ exports.getTask = async (req, res) => {
         const limit = Number(req.query.limit) || 10;
         const offset = (page - 1) * limit;
 
+        const query = req.query;
+        const conditions = [];
+        const values = [];
+
+        conditions.push('user_id=?');
+        values.push(req.user.id);
+
+        if (query.status) {
+            conditions.push('status=?');
+            values.push(query.status);
+        }
+
+        if (query.priority) {
+            conditions.push('priority=?');
+            values.push(query.priority);
+        }
+
+        if (query.search) {
+            conditions.push('title LIKE ?');
+            values.push(`%${query.search}%`);
+        }
+
+        if (query.from) {
+            conditions.push('start_date>=?');
+            values.push(query.from);
+        }
+
+        if (query.to) {
+            conditions.push('start_date<=?');
+            values.push(query.to);
+        }
+
+        values.push(limit, offset);
+
         const [tasks] = await pool.query(
             `SELECT * FROM tasks 
-            WHERE user_id = ? 
+            WHERE ${conditions.join(' AND ')}
             ORDER BY created_at DESC
             LIMIT ? OFFSET ?`,
-            [req.user.id, limit, offset]
+            values
         );
 
         const [[{ total }]] = await pool.query(
