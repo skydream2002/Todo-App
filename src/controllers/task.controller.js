@@ -98,10 +98,6 @@ exports.updateTask = async (req, res) => {
             values.push(priority);
         }
 
-        if (fields.length === 0) {
-            return res.status(400).json({ msg: 'No fields to update' });
-        }
-
         values.push(taskId, req.user.id);
 
         const [result] = await pool.query(
