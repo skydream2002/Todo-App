@@ -4,10 +4,6 @@ exports.createTask = async (req, res) => {
     try {
         const { title, description, start_date, end_date, priority } = req.body;
 
-        if (!title) {
-            return res.status(400).json({ message: 'Title is required' });
-        }
-
         const [result] = await pool.query(
             `INSERT INTO tasks 
             (user_id, title, description, start_date, end_date,  priority) 
@@ -77,6 +73,8 @@ exports.getTask = async (req, res) => {
             values.push(query.to);
         }
 
+        const countValues = [...values];
+
         values.push(limit, offset);
 
         const [tasks] = await pool.query(
@@ -88,8 +86,11 @@ exports.getTask = async (req, res) => {
         );
 
         const [[{ total }]] = await pool.query(
-            'SELECT COUNT(*) AS total FROM tasks WHERE user_id = ?',
-            [req.user.id]
+            `SELECT COUNT(*) AS total
+            FROM tasks
+            WHERE ${conditions.join(' AND ')}
+            `,
+            countValues
         );
 
         res.json({

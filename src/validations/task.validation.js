@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-exports.createTask = Joi.object({
+exports.createTaskSchema = Joi.object({
     title: Joi.string()
         .min(3)
         .required(),
@@ -20,7 +20,7 @@ exports.createTask = Joi.object({
         .optional()
 });
 
-exports.updateTask = Joi.object({
+exports.updateTaskSchema = Joi.object({
     title: Joi.string().min(3),
 
     status: Joi.string()
