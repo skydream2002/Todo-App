@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, CheckSquare, List, LogOut, Plus, Edit2, Trash2, X, Search, Filter, Clock, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const API_BASE_URL = 'https://todo-app-kchl.onrender.com';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // API Service
 const api = {
