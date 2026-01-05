@@ -993,6 +993,22 @@ const CalendarView = ({ token }) => {
 // Main App with Modern Navigation
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
+
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${API_BASE_URL}/todo?page=1&limit=1`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).then(res => {
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        setToken(null);
+      }
+    }).catch(() => {
+      localStorage.removeItem('token');
+      setToken(null);
+    });
+  }, [token]);
+
   const [activeTab, setActiveTab] = useState('todos');
 
   const handleLogout = () => {
