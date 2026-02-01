@@ -10,7 +10,7 @@ USE todo_app;
 -- =========================
 -- User table
 -- =========================
-CREATE TABLE user (
+CREATE TABLE User (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100),
     email VARCHAR(200) UNIQUE,
