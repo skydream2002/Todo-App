@@ -32,7 +32,7 @@ CREATE TABLE todos (
     KEY user_id (user_id),
     CONSTRAINT todos_ibfk_1
         FOREIGN KEY (user_id)
-        REFERENCES user(id)
+        REFERENCES User(id)
         ON DELETE CASCADE
 );
 
@@ -55,6 +55,6 @@ CREATE TABLE tasks (
     KEY user_id (user_id),
     CONSTRAINT tasks_ibfk_1
         FOREIGN KEY (user_id)
-        REFERENCES user(id)
+        REFERENCES User(id)
         ON DELETE CASCADE
 );
