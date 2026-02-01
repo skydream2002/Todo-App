@@ -10,7 +10,7 @@ services:
       - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
   backend:
-    build: ./backend
+    image: mohammadreza2005/todo-backend:latest
     ports:
       - "8000:3000"
     depends_on:
@@ -19,7 +19,7 @@ services:
       - .env
 
   frontend:
-    build: ./frontend
+    image: mohammadreza2005/todo-frontend:latest
     ports:
       - "80:80"
     depends_on:
