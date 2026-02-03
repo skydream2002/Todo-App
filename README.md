@@ -132,6 +132,27 @@ JWT_SECRET=my_super_secret_key
 * Backend API: http://localhost:8000
 * Database Access: localhost:3306 (Connect via TablePlus, DBeaver, etc.)
 
+
+## Fix for MySQL `schema.sql` Mount Issue in Docker
+
+If you encounter the following error when running `docker-compose up` and your database tables are not being created:
+
+ERROR: Can't initialize batch_readline - may be the input source is a directory or a block device.
+
+
+### Cause
+This issue happens when Docker fails to correctly mount the MySQL schema file, causing `schema.sql` to be treated as a directory instead of a file.
+
+### Fix
+1. Go to the project’s GitHub repository.
+2. Copy the following file from the repository:
+backend/database/schema.sql
+
+3. Make sure the `schema.sql` file is placed **inside the `backend/database` directory** in your local project.
+4. Stop and remove existing containers and volumes:```docker-compose down -v```
+5. Start the project again:```docker-compose up```
+
+
 ---
 
 ### 🛠️ Manual Setup (Alternative)
